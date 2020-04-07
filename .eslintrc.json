@@ -18,6 +18,6 @@
   },
   "plugins": ["react"],
   "rules": {
-    "react/destructuring-assignment": "off"
+    "no-console": "off"
   }
 }
