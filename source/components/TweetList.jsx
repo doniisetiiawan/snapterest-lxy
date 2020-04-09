@@ -1,5 +1,7 @@
-import React from 'react';
-import Tweet from './Tweet.react.js';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+
+import Tweet from './Tweet';
 
 const listStyle = {
   padding: '0',
@@ -10,11 +12,7 @@ const listItemStyle = {
   listStyle: 'none',
 };
 
-const TweetList = React.createClass({
-  getListOfTweetIds() {
-    return Object.keys(this.props.tweets);
-  },
-
+class TweetList extends Component {
   getTweetElement(tweetId) {
     const tweet = this.props.tweets[tweetId];
     const handleRemoveTweetFromCollection = this.props
@@ -37,14 +35,29 @@ const TweetList = React.createClass({
         {tweetElement}
       </li>
     );
-  },
+  }
 
   render() {
     const tweetElements = this.getListOfTweetIds().map(
       this.getTweetElement,
     );
 
-    return <ul style={listStyle}>{tweetElements}</ul>;
-  },
-});
+    return (
+      <div>
+        <ul style={listStyle}>{tweetElements}</ul>
+      </div>
+    );
+  }
+}
+
 export default TweetList;
+
+TweetList.propTypes = {
+  onRemoveTweetFromCollection: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  tweets: PropTypes.array,
+};
+
+TweetList.defaultProps = {
+  tweets: [],
+};

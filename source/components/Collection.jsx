@@ -1,10 +1,20 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import CollectionControls from './CollectionControls.react';
-import TweetList from './TweetList.react';
-import Header from './Header.react';
 
-const Collection = React.createClass({
+import CollectionControls from './CollectionControls';
+import TweetList from './TweetList';
+import Header from './Header';
+
+class Collection extends Component {
+  getListOfTweetIds() {
+    return Object.keys(this.props.tweets);
+  }
+
+  getNumberOfTweetsInCollection() {
+    return this.getListOfTweetIds().length;
+  }
+
   createHtmlMarkupStringOfTweetList() {
     const htmlString = ReactDOMServer.renderToStaticMarkup(
       <TweetList tweets={this.props.tweets} />,
@@ -15,15 +25,7 @@ const Collection = React.createClass({
     };
 
     return JSON.stringify(htmlMarkup);
-  },
-
-  getListOfTweetIds() {
-    return Object.keys(this.props.tweets);
-  },
-
-  getNumberOfTweetsInCollection() {
-    return this.getListOfTweetIds().length;
-  },
+  }
 
   render() {
     const numberOfTweetsInCollection = this.getNumberOfTweetsInCollection();
@@ -57,9 +59,19 @@ const Collection = React.createClass({
         </div>
       );
     }
-
     return <Header text="Your collection is empty" />;
-  },
-});
+  }
+}
 
 export default Collection;
+
+Collection.propTypes = {
+  onRemoveAllTweetsFromCollection: PropTypes.func.isRequired,
+  onRemoveTweetFromCollection: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  tweets: PropTypes.array,
+};
+
+Collection.defaultProps = {
+  tweets: [],
+};

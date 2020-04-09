@@ -1,45 +1,50 @@
-import React from 'react';
-import Header from './Header.react';
-import Button from './Button.react';
+/* eslint-disable react/no-string-refs */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import Header from './Header';
+import Button from './Button';
 
 const inputStyle = {
   marginRight: '5px',
 };
 
-const CollectionRenameForm = React.createClass({
-  getInitialState() {
-    return {
+class CollectionRenameForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       inputValue: this.props.name,
     };
-  },
+  }
+
+  componentDidMount() {
+    this.refs.collectionName.focus();
+  }
 
   setInputValue(inputValue) {
     this.setState({
       inputValue,
     });
-  },
+  }
 
   handleInputValueChange(event) {
     const inputValue = event.target.value;
     this.setInputValue(inputValue);
-  },
+  }
 
   handleFormSubmit(event) {
     event.preventDefault();
     const collectionName = this.state.inputValue;
     this.props.onChangeCollectionName(collectionName);
-  },
+  }
 
   handleFormCancel(event) {
     event.preventDefault();
     const collectionName = this.props.name;
     this.setInputValue(collectionName);
     this.props.onCancelCollectionNameChange();
-  },
-
-  componentDidMount() {
-    this.refs.collectionName.focus();
-  },
+  }
 
   render() {
     return (
@@ -69,7 +74,13 @@ const CollectionRenameForm = React.createClass({
         />
       </form>
     );
-  },
-});
+  }
+}
 
 export default CollectionRenameForm;
+
+CollectionRenameForm.propTypes = {
+  name: PropTypes.string.isRequired,
+  onCancelCollectionNameChange: PropTypes.func.isRequired,
+  onChangeCollectionName: PropTypes.func.isRequired,
+};

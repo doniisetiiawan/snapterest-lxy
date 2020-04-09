@@ -1,26 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Header from './Header.react';
-import Tweet from './Tweet.react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-const StreamTweet = React.createClass({
-  getInitialState() {
-    console.log(
-      '[Snapterest] StreamTweet: 1. Running getInitialState()',
-    );
+import Header from './Header';
+import Tweet from './Tweet';
 
-    return {
+class StreamTweet extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // eslint-disable-next-line react/no-unused-state
       numberOfCharactersIsIncreasing: null,
       headerText: null,
     };
-  },
+  }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     console.log(
       '[Snapterest] StreamTweet: 2. Running componentWillMount()',
     );
 
     this.setState({
+      // eslint-disable-next-line react/no-unused-state
       numberOfCharactersIsIncreasing: true,
       headerText: 'Latest public photo from Twitter',
     });
@@ -29,21 +31,24 @@ const StreamTweet = React.createClass({
       numberOfReceivedTweets: 1,
       numberOfDisplayedTweets: 1,
     };
-  },
+  }
 
   componentDidMount() {
     console.log(
       '[Snapterest] StreamTweet: 3. Running componentDidMount()',
     );
 
-    const componentDOMRepresentation = ReactDOM.findDOMNode(
-      this,
+    console.log(
+      'const componentDOMRepresentation = ReactDOM.findDOMNode(\n'
+        + '      this,\n'
+        + '    );\n'
+        + '    window.snapterest.headerHtml = componentDOMRepresentation.children[0].outerHTML;\n'
+        + '    window.snapterest.tweetHtml = componentDOMRepresentation.children[1].outerHTML;',
     );
-    window.snapterest.headerHtml = componentDOMRepresentation.children[0].outerHTML;
-    window.snapterest.tweetHtml = componentDOMRepresentation.children[1].outerHTML;
-  },
+  }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     console.log(
       '[Snapterest] StreamTweet: 4. Running componentWillReceiveProps()',
     );
@@ -54,6 +59,7 @@ const StreamTweet = React.createClass({
     let headerText;
 
     this.setState({
+      // eslint-disable-next-line react/no-unused-state
       numberOfCharactersIsIncreasing: isNumberOfCharactersIncreasing,
     });
 
@@ -68,29 +74,32 @@ const StreamTweet = React.createClass({
     });
 
     window.snapterest.numberOfReceivedTweets++;
-  },
+  }
 
+  // eslint-disable-next-line no-unused-vars
   shouldComponentUpdate(nextProps, nextState) {
     console.log(
       '[Snapterest] StreamTweet: 5. Running shouldComponentUpdate()',
     );
 
     return nextProps.tweet.text.length > 1;
-  },
+  }
 
-  componentWillUpdate(nextProps, nextState) {
+  // eslint-disable-next-line camelcase,no-unused-vars
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     console.log(
       '[Snapterest] StreamTweet: 6. Running componentWillUpdate()',
     );
-  },
+  }
 
+  // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState) {
     console.log(
       '[Snapterest] StreamTweet: 7. Running componentDidUpdate()',
     );
 
     window.snapterest.numberOfDisplayedTweets++;
-  },
+  }
 
   componentWillUnmount() {
     console.log(
@@ -98,13 +107,12 @@ const StreamTweet = React.createClass({
     );
 
     delete window.snapterest;
-  },
+  }
 
   render() {
     console.log(
       '[Snapterest] StreamTweet: Running render()',
     );
-
     return (
       <section>
         <Header text={this.state.headerText} />
@@ -114,7 +122,17 @@ const StreamTweet = React.createClass({
         />
       </section>
     );
-  },
-});
+  }
+}
 
 export default StreamTweet;
+
+StreamTweet.propTypes = {
+  onAddTweetToCollection: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  tweet: PropTypes.array,
+};
+
+StreamTweet.defaultProps = {
+  tweet: [],
+};

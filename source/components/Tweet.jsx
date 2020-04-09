@@ -1,4 +1,5 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 const tweetStyle = {
   position: 'relative',
@@ -14,22 +15,7 @@ const imageStyle = {
   border: '1px solid #fff',
 };
 
-const Tweet = React.createClass({
-  propTypes: {
-    tweet(properties, propertyName, componentName) {
-      const tweet = properties[propertyName];
-
-      if (!tweet) {
-        return new Error('Tweet must be set.');
-      }
-
-      if (!tweet.media) {
-        return new Error('Tweet must have an image.');
-      }
-    },
-    onImageClick: React.PropTypes.func,
-  },
-
+class Tweet extends Component {
   handleImageClick() {
     const { tweet } = this.props;
     const { onImageClick } = this.props;
@@ -37,12 +23,11 @@ const Tweet = React.createClass({
     if (onImageClick) {
       onImageClick(tweet);
     }
-  },
+  }
 
   render() {
     const { tweet } = this.props;
     const tweetMediaUrl = tweet.media[0].url;
-
     return (
       <div style={tweetStyle}>
         <img
@@ -53,7 +38,17 @@ const Tweet = React.createClass({
         />
       </div>
     );
-  },
-});
+  }
+}
 
 export default Tweet;
+
+Tweet.propTypes = {
+  onImageClick: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  tweet: PropTypes.array,
+};
+
+Tweet.defaultProps = {
+  tweet: [],
+};

@@ -1,16 +1,20 @@
-import React from 'react';
-import Header from './Header.react';
-import Button from './Button.react';
-import CollectionRenameForm from './CollectionRenameForm.react';
-import CollectionExportForm from './CollectionExportForm.react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-const CollectionControls = React.createClass({
-  getInitialState() {
-    return {
+import Header from './Header';
+import Button from './Button';
+import CollectionRenameForm from './CollectionRenameForm';
+import CollectionExportForm from './CollectionExportForm';
+
+class CollectionControls extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       name: 'new',
       isEditingName: false,
     };
-  },
+  }
 
   getHeaderText() {
     const { numberOfTweetsInCollection } = this.props;
@@ -29,20 +33,20 @@ const CollectionControls = React.createClass({
         collection
       </span>
     );
-  },
-
-  toggleEditCollectionName() {
-    this.setState({
-      isEditingName: !this.state.isEditingName,
-    });
-  },
+  }
 
   setCollectionName(name) {
     this.setState({
       name,
       isEditingName: false,
     });
-  },
+  }
+
+  toggleEditCollectionName() {
+    this.setState((prevState) => ({
+      isEditingName: !prevState.isEditingName,
+    }));
+  }
 
   render() {
     if (this.state.isEditingName) {
@@ -56,7 +60,6 @@ const CollectionControls = React.createClass({
         />
       );
     }
-
     return (
       <div>
         <Header text={this.getHeaderText()} />
@@ -78,7 +81,14 @@ const CollectionControls = React.createClass({
         />
       </div>
     );
-  },
-});
+  }
+}
 
 export default CollectionControls;
+
+CollectionControls.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  htmlMarkup: PropTypes.any.isRequired,
+  numberOfTweetsInCollection: PropTypes.number.isRequired,
+  onRemoveAllTweetsFromCollection: PropTypes.func.isRequired,
+};

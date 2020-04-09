@@ -1,13 +1,16 @@
-import React from 'react';
-import Stream from './Stream.react';
-import Collection from './Collection.react';
+import React, { Component } from 'react';
 
-const Application = React.createClass({
-  getInitialState() {
-    return {
+import Stream from './Stream';
+import Collection from './Collection';
+
+class Application extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       collectionTweets: {},
     };
-  },
+  }
 
   addTweetToCollection(tweet) {
     const { collectionTweets } = this.state;
@@ -17,7 +20,7 @@ const Application = React.createClass({
     this.setState({
       collectionTweets,
     });
-  },
+  }
 
   removeTweetFromCollection(tweet) {
     const { collectionTweets } = this.state;
@@ -27,13 +30,13 @@ const Application = React.createClass({
     this.setState({
       collectionTweets,
     });
-  },
+  }
 
   removeAllTweetsFromCollection() {
     this.setState({
       collectionTweets: {},
     });
-  },
+  }
 
   render() {
     return (
@@ -60,7 +63,7 @@ const Application = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 export default Application;
